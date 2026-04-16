@@ -1,0 +1,591 @@
+{
+  "source_file": "american_bankruptcy.csv",
+  "output_file": "american_bankruptcy_with_features.csv",
+  "generated_by": "build_bankruptcy_features.py",
+  "row_count": 78682,
+  "company_count": 8971,
+  "year_range": [
+    1999,
+    2018
+  ],
+  "status_label_counts": {
+    "alive": 73462,
+    "failed": 5220
+  },
+  "raw_variables": {
+    "company_name": "Company identifier",
+    "status_label": "alive | failed \u2014 default / bankruptcy indicator",
+    "year": "Fiscal year",
+    "X1": "Current assets",
+    "X2": "Cost of goods sold (COGS)",
+    "X3": "Depreciation and amortization",
+    "X4": "EBITDA",
+    "X5": "Inventory",
+    "X6": "Net income",
+    "X7": "Total receivables (net)",
+    "X8": "Market value (market capitalization)",
+    "X9": "Net sales",
+    "X10": "Total assets",
+    "X11": "Total long-term debt",
+    "X12": "EBIT",
+    "X13": "Gross profit",
+    "X14": "Total current liabilities",
+    "X15": "Retained earnings",
+    "X16": "Total revenue",
+    "X17": "Total liabilities",
+    "X18": "Total operating expenses"
+  },
+  "derived_features": {
+    "debt_to_assets": {
+      "formula": "X17 / X10",
+      "description": "Total liabilities to total assets (leverage)."
+    },
+    "long_term_debt_to_assets": {
+      "formula": "X11 / X10",
+      "description": "Long-term debt scaled by total assets."
+    },
+    "current_ratio": {
+      "formula": "X1 / X14",
+      "description": "Current assets / current liabilities; liquidity."
+    },
+    "quick_ratio": {
+      "formula": "(X1 - X5) / X14",
+      "description": "Acid-test: liquid assets excl. inventory over current liabilities."
+    },
+    "cash_conversion_proxy": {
+      "formula": "(X7 + X5) / X9",
+      "description": "Receivables plus inventory relative to net sales (working-capital intensity)."
+    },
+    "book_equity": {
+      "formula": "X10 - X17",
+      "description": "Approximate book equity (assets \u2212 total liabilities)."
+    },
+    "debt_to_equity_book": {
+      "formula": "X17 / (X10 - X17)",
+      "description": "Total liabilities to book equity; undefined if equity \u2264 0."
+    },
+    "lt_debt_to_equity_book": {
+      "formula": "X11 / (X10 - X17)",
+      "description": "Long-term debt to book equity."
+    },
+    "net_margin_sales": {
+      "formula": "X6 / X9",
+      "description": "Net income / net sales."
+    },
+    "net_margin_revenue": {
+      "formula": "X6 / X16",
+      "description": "Net income / total revenue."
+    },
+    "gross_margin": {
+      "formula": "X13 / X9",
+      "description": "Gross profit / net sales."
+    },
+    "ebitda_margin_sales": {
+      "formula": "X4 / X9",
+      "description": "EBITDA / net sales."
+    },
+    "ebit_margin_sales": {
+      "formula": "X12 / X9",
+      "description": "EBIT / net sales."
+    },
+    "operating_expense_ratio": {
+      "formula": "X18 / X9",
+      "description": "Operating expenses / net sales."
+    },
+    "roa": {
+      "formula": "X6 / X10",
+      "description": "Return on assets (net income / total assets)."
+    },
+    "asset_turnover_sales": {
+      "formula": "X9 / X10",
+      "description": "Net sales / total assets."
+    },
+    "inventory_turnover_cogs": {
+      "formula": "X2 / X5",
+      "description": "COGS / inventory (turns); high if inventory low or COGS high."
+    },
+    "receivables_turnover_sales": {
+      "formula": "X9 / X7",
+      "description": "Net sales / receivables (collection speed proxy)."
+    },
+    "working_capital": {
+      "formula": "X1 - X14",
+      "description": "Current assets minus current liabilities."
+    },
+    "working_capital_to_assets": {
+      "formula": "(X1 - X14) / X10",
+      "description": "Working capital as fraction of total assets."
+    },
+    "retained_earnings_to_assets": {
+      "formula": "X15 / X10",
+      "description": "Retained earnings / total assets (Altman-style signal)."
+    },
+    "market_to_book_assets": {
+      "formula": "X8 / X10",
+      "description": "Market cap / total assets."
+    },
+    "sales_to_market_cap": {
+      "formula": "X9 / X8",
+      "description": "Net sales / market cap (inverse valuation multiple)."
+    },
+    "liabilities_to_sales": {
+      "formula": "X17 / X9",
+      "description": "Total liabilities scaled by net sales."
+    }
+  },
+  "summary_statistics_raw_X": {
+    "X1": {
+      "count": 78682,
+      "mean": 880.3624845835133,
+      "std": 3928.5647936521987,
+      "min": -7.76,
+      "q25": 18.924,
+      "median": 100.4495,
+      "q75": 431.52675,
+      "max": 169662.0
+    },
+    "X2": {
+      "count": 78682,
+      "mean": 1594.5290288757276,
+      "std": 8930.484664476227,
+      "min": -366.645,
+      "q25": 17.03825,
+      "median": 103.661,
+      "q75": 634.548,
+      "max": 374623.0
+    },
+    "X3": {
+      "count": 78682,
+      "mean": 121.23425634833885,
+      "std": 652.3768035960039,
+      "min": 0.0,
+      "q25": 1.192,
+      "median": 7.9295,
+      "q75": 47.97175,
+      "max": 28430.0
+    },
+    "X4": {
+      "count": 78682,
+      "mean": 376.75942418850553,
+      "std": 2012.0231424233425,
+      "min": -21913.0,
+      "q25": -0.811,
+      "median": 15.034500000000001,
+      "q75": 139.65525,
+      "max": 81730.0
+    },
+    "X5": {
+      "count": 78682,
+      "mean": 201.6057165806665,
+      "std": 1060.7660961032943,
+      "min": 0.0,
+      "q25": 0.0,
+      "median": 7.023,
+      "q75": 74.74725000000001,
+      "max": 62567.0
+    },
+    "X6": {
+      "count": 78682,
+      "mean": 129.38245296255815,
+      "std": 1265.5320216400326,
+      "min": -98696.0,
+      "q25": -7.41575,
+      "median": 1.616,
+      "q75": 40.14425,
+      "max": 104821.0
+    },
+    "X7": {
+      "count": 78682,
+      "mean": 286.83274297806355,
+      "std": 1335.9785706231226,
+      "min": -0.006,
+      "q25": 3.28125,
+      "median": 22.82,
+      "q75": 131.5805,
+      "max": 65812.0
+    },
+    "X8": {
+      "count": 78682,
+      "mean": 3414.3546097951244,
+      "std": 18414.10364738874,
+      "min": 0.0001,
+      "q25": 34.98,
+      "median": 227.51184999999998,
+      "q75": 1244.88995,
+      "max": 1073390.54
+    },
+    "X9": {
+      "count": 78682,
+      "mean": 2364.019706158969,
+      "std": 11950.068841758437,
+      "min": -1964.999,
+      "q25": 27.548499999999997,
+      "median": 186.5985,
+      "q75": 1046.4025,
+      "max": 511729.0
+    },
+    "X10": {
+      "count": 78682,
+      "mean": 2867.1106204214434,
+      "std": 12917.944421187363,
+      "min": 0.001,
+      "q25": 37.3635,
+      "median": 213.2035,
+      "q75": 1171.3647500000002,
+      "max": 531864.0
+    },
+    "X11": {
+      "count": 78682,
+      "mean": 722.4837103911949,
+      "std": 3242.1709464678047,
+      "min": -0.023,
+      "q25": 0.0,
+      "median": 7.593500000000001,
+      "q75": 248.76075,
+      "max": 166250.0
+    },
+    "X12": {
+      "count": 78682,
+      "mean": 255.52503463307997,
+      "std": 1494.6435340964124,
+      "min": -25913.0,
+      "q25": -2.787,
+      "median": 6.518000000000001,
+      "q75": 87.599,
+      "max": 71230.0
+    },
+    "X13": {
+      "count": 78682,
+      "mean": 769.4907831015989,
+      "std": 3774.7031137877234,
+      "min": -21536.0,
+      "q25": 8.52125,
+      "median": 63.5815,
+      "q75": 344.07425,
+      "max": 137106.0
+    },
+    "X14": {
+      "count": 78682,
+      "mean": 610.072254581734,
+      "std": 2938.387443050376,
+      "min": 0.001,
+      "q25": 8.88925,
+      "median": 43.333,
+      "q75": 222.817,
+      "max": 116866.0
+    },
+    "X15": {
+      "count": 78682,
+      "mean": 532.4670687832032,
+      "std": 6369.159440448502,
+      "min": -102362.0,
+      "q25": -68.28275,
+      "median": -1.131,
+      "q75": 146.07,
+      "max": 402089.0
+    },
+    "X16": {
+      "count": 78682,
+      "mean": 2364.019706158969,
+      "std": 11950.068841758437,
+      "min": -1964.999,
+      "q25": 27.548499999999997,
+      "median": 186.5985,
+      "q75": 1046.4025,
+      "max": 511729.0
+    },
+    "X17": {
+      "count": 78682,
+      "mean": 1773.563963168196,
+      "std": 8053.68490156543,
+      "min": 0.001,
+      "q25": 13.486,
+      "median": 81.988,
+      "q75": 629.975,
+      "max": 337980.0
+    },
+    "X18": {
+      "count": 78682,
+      "mean": 1987.2603070587934,
+      "std": 10419.629037669532,
+      "min": -317.197,
+      "q25": 32.8725,
+      "median": 168.912,
+      "q75": 875.52225,
+      "max": 481580.0
+    }
+  },
+  "summary_statistics_derived": {
+    "debt_to_assets": {
+      "count": 78682,
+      "mean": 1.9233431346013203,
+      "std": 46.4419055310883,
+      "min": 4.0518638573743926e-05,
+      "q25": 0.3024221484670565,
+      "median": 0.5070324743930628,
+      "q75": 0.7105604064254902,
+      "max": 6324.0
+    },
+    "long_term_debt_to_assets": {
+      "count": 78682,
+      "mean": 0.26636061517227677,
+      "std": 11.829246046858566,
+      "min": -0.034901365705614563,
+      "q25": 0.0,
+      "median": 0.10197223666805652,
+      "q75": 0.28987694400179453,
+      "max": 3287.0
+    },
+    "current_ratio": {
+      "count": 78682,
+      "mean": 3.4916156767652953,
+      "std": 88.74842803212609,
+      "min": -12.721311475409836,
+      "q25": 1.1580528257429492,
+      "median": 1.8970679253554228,
+      "q75": 3.193725134557665,
+      "max": 24108.0
+    },
+    "quick_ratio": {
+      "count": 78682,
+      "mean": 2.9880590620902723,
+      "std": 88.74235937358999,
+      "min": -12.98360655737705,
+      "q25": 0.8282054177647958,
+      "median": 1.385922515871308,
+      "q75": 2.5237938668920252,
+      "max": 24108.0
+    },
+    "cash_conversion_proxy": {
+      "count": 78682,
+      "mean": 0.5324696227954172,
+      "std": 9.544838009659808,
+      "min": -125.0,
+      "q25": 0.15066978753397758,
+      "median": 0.23834076449054242,
+      "q75": 0.34542766422325544,
+      "max": 1494.0
+    },
+    "book_equity": {
+      "count": 78682,
+      "mean": 1093.5466572532473,
+      "std": 5516.8251446112035,
+      "min": -25560.0,
+      "q25": 13.53875,
+      "median": 96.43250000000002,
+      "q75": 477.54075,
+      "max": 198528.0
+    },
+    "debt_to_equity_book": {
+      "count": 78680,
+      "mean": 3.163869736534561,
+      "std": 337.98428859589546,
+      "min": -5846.999999998048,
+      "q25": 0.27080622666178744,
+      "median": 0.7522475477774677,
+      "q75": 1.6620433089916535,
+      "max": 87701.49999958124
+    },
+    "lt_debt_to_equity_book": {
+      "count": 78680,
+      "mean": 1.877283443118316,
+      "std": 277.57622067921443,
+      "min": -1950.4999999993486,
+      "q25": 0.0,
+      "median": 0.10139404069749905,
+      "q75": 0.6065641078573865,
+      "max": 75264.24999964063
+    },
+    "net_margin_sales": {
+      "count": 78682,
+      "mean": -11.483463383641494,
+      "std": 279.7320249287754,
+      "min": -32545.0,
+      "q25": -0.17447291006732915,
+      "median": 0.015438534045477459,
+      "q75": 0.07035174948921442,
+      "max": 1542.5645161290322
+    },
+    "net_margin_revenue": {
+      "count": 78682,
+      "mean": -11.483463383641494,
+      "std": 279.7320249287754,
+      "min": -32545.0,
+      "q25": -0.17447291006732915,
+      "median": 0.015438534045477459,
+      "q75": 0.07035174948921442,
+      "max": 1542.5645161290322
+    },
+    "gross_margin": {
+      "count": 78682,
+      "mean": -6.32031291318571,
+      "std": 208.69626737404772,
+      "min": -29325.7,
+      "q25": 0.201613090312022,
+      "median": 0.3498568705165167,
+      "q75": 0.5394860260348401,
+      "max": 358.2105263157895
+    },
+    "ebitda_margin_sales": {
+      "count": 78682,
+      "mean": -8.67625025769467,
+      "std": 214.70811523590683,
+      "min": -29325.7,
+      "q25": -0.04417637032496059,
+      "median": 0.0816873777641402,
+      "q75": 0.17158610310137018,
+      "max": 358.2105263157895
+    },
+    "ebit_margin_sales": {
+      "count": 78682,
+      "mean": -9.04996770551473,
+      "std": 219.54113879594712,
+      "min": -30175.7,
+      "q25": -0.10828566312015583,
+      "median": 0.04261282706883802,
+      "q75": 0.11694661340514152,
+      "max": 394.47368421052636
+    },
+    "operating_expense_ratio": {
+      "count": 78682,
+      "mean": 9.676252480482024,
+      "std": 214.70811513560454,
+      "min": -357.2105263157895,
+      "q25": 0.8284182328436511,
+      "median": 0.9183126222358597,
+      "q75": 1.0441763703249607,
+      "max": 29326.7
+    },
+    "roa": {
+      "count": 78682,
+      "mean": -0.6902189777350064,
+      "std": 13.653513524641975,
+      "min": -1514.9999999999998,
+      "q25": -0.1404857557848011,
+      "median": 0.01742216660108095,
+      "q75": 0.0664909068873852,
+      "max": 244.83333333333334
+    },
+    "asset_turnover_sales": {
+      "count": 78682,
+      "mean": 1.177672533226672,
+      "std": 3.2408469533976687,
+      "min": -31.586933276304535,
+      "q25": 0.47790752179730545,
+      "median": 0.8895433907745511,
+      "q75": 1.4586425906922917,
+      "max": 420.0
+    },
+    "inventory_turnover_cogs": {
+      "count": 58981,
+      "mean": 32.85732358804591,
+      "std": 470.76975303760054,
+      "min": -53.36899563318777,
+      "q25": 3.072674677347575,
+      "median": 5.4758364312267656,
+      "q75": 13.29610729668008,
+      "max": 66511.0
+    },
+    "receivables_turnover_sales": {
+      "count": 76477,
+      "mean": 21.557226865473037,
+      "std": 261.3940931607363,
+      "min": -159.37469652009713,
+      "q25": 4.8056004953362494,
+      "median": 6.718381112984823,
+      "q75": 10.475412316538055,
+      "max": 47246.0
+    },
+    "working_capital": {
+      "count": 78682,
+      "mean": 270.2902300017793,
+      "std": 1791.2371145679601,
+      "min": -33780.0,
+      "q25": 2.228999999999999,
+      "median": 34.537000000000006,
+      "q75": 170.70075,
+      "max": 111174.0
+    },
+    "working_capital_to_assets": {
+      "count": 78682,
+      "mean": -0.9912752080486058,
+      "std": 41.529761155986556,
+      "min": -6322.999999999999,
+      "q25": 0.03649426771942572,
+      "median": 0.2098229909712746,
+      "q75": 0.42178670757291326,
+      "max": 0.996996996996997
+    },
+    "retained_earnings_to_assets": {
+      "count": 78682,
+      "mean": -11.170105407131581,
+      "std": 256.80915950131873,
+      "min": -24290.0,
+      "q25": -1.0578893300776016,
+      "median": -0.015195074013606789,
+      "q75": 0.27387550248858983,
+      "max": 24.039408866995075
+    },
+    "market_to_book_assets": {
+      "count": 78682,
+      "mean": 8.824183084345083,
+      "std": 365.0897706685746,
+      "min": 1.8523526731301426e-06,
+      "q25": 0.5310327418062932,
+      "median": 1.0494607785806727,
+      "q75": 2.122810273368722,
+      "max": 69234.0
+    },
+    "sales_to_market_cap": {
+      "count": 78682,
+      "mean": 42.40107198301162,
+      "std": 4262.191790927691,
+      "min": -9.011973467546404,
+      "q25": 0.2997869964808064,
+      "median": 0.7868632997624381,
+      "q75": 1.976552027414602,
+      "max": 993350.0
+    },
+    "liabilities_to_sales": {
+      "count": 78682,
+      "mean": 10.14628078545712,
+      "std": 271.8849243812057,
+      "min": -263.0,
+      "q25": 0.27646957489490087,
+      "median": 0.5195790294637378,
+      "q75": 1.1328748630168282,
+      "max": 41471.5
+    }
+  },
+  "missing_count_derived": {
+    "debt_to_assets": 0,
+    "long_term_debt_to_assets": 0,
+    "current_ratio": 0,
+    "quick_ratio": 0,
+    "cash_conversion_proxy": 0,
+    "book_equity": 0,
+    "debt_to_equity_book": 2,
+    "lt_debt_to_equity_book": 2,
+    "net_margin_sales": 0,
+    "net_margin_revenue": 0,
+    "gross_margin": 0,
+    "ebitda_margin_sales": 0,
+    "ebit_margin_sales": 0,
+    "operating_expense_ratio": 0,
+    "roa": 0,
+    "asset_turnover_sales": 0,
+    "inventory_turnover_cogs": 19701,
+    "receivables_turnover_sales": 2205,
+    "working_capital": 0,
+    "working_capital_to_assets": 0,
+    "retained_earnings_to_assets": 0,
+    "market_to_book_assets": 0,
+    "sales_to_market_cap": 0,
+    "liabilities_to_sales": 0
+  },
+  "notes": [
+    "Ratios use safe division: denominator must be non-zero; otherwise NaN.",
+    "book_equity = X10 - X17 can be \u2264 0; debt_to_equity_book is NaN in those cases.",
+    "quick_ratio uses X1 - X5; if inventory exceeds current assets, quick_ratio can be negative."
+  ]
+}
