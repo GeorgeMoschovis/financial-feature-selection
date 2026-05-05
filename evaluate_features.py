@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, roc_auc_score
 from sklearn.model_selection import StratifiedKFold
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
@@ -73,7 +73,7 @@ class Evaluator:
             scaler = StandardScaler()
             Xtr = scaler.fit_transform(Xs[tr])
             Xte = scaler.transform(Xs[te])
-            clf = KNeighborsClassifier(n_neighbors=self.k, weights="uniform", n_jobs=-1)
+            clf = KNeighborsClassifier(n_neighbors=self.k, weights="uniform")
             clf.fit(Xtr, self.y[tr])
             accs.append(accuracy_score(self.y[te], clf.predict(Xte)))
 
@@ -87,21 +87,24 @@ class Evaluator:
         mask = np.array([1 if i in subset else 0 for i in range(self.num_features)], dtype=np.int8)
         selected = np.where(mask == 1)[0]
 
-        all_preds, all_true = [], []
+        all_preds, all_true, all_probs = [], [], []
         for tr, te in self.cv_splits:
             Xs = self.X[:, selected]
             scaler = StandardScaler()
             Xtr = scaler.fit_transform(Xs[tr])
             Xte = scaler.transform(Xs[te])
-            clf = KNeighborsClassifier(n_neighbors=self.k, weights="uniform", n_jobs=-1)
+            clf = KNeighborsClassifier(n_neighbors=self.k, weights="uniform")
             clf.fit(Xtr, self.y[tr])
             all_preds.extend(clf.predict(Xte))
             all_true.extend(self.y[te])
+            all_probs.extend(clf.predict_proba(Xte)[:, 1])
 
         all_preds = np.array(all_preds)
         all_true = np.array(all_true)
+        all_probs = np.array(all_probs)
 
         oca = accuracy_score(all_true, all_preds)
+        auc = roc_auc_score(all_true, all_probs)
 
         classes = np.unique(all_true)
         per_class = {int(c): accuracy_score(all_true[all_true == c], all_preds[all_true == c]) for c in classes}
@@ -109,7 +112,7 @@ class Evaluator:
 
         rmse = float(np.sqrt(np.mean((all_preds - all_true) ** 2)))
 
-        return {"OCA": round(oca, 4), "ACA": round(aca, 4), "RMSE": round(rmse, 4),
+        return {"OCA": round(oca, 4), "AUC": round(auc, 4), "ACA": round(aca, 4), "RMSE": round(rmse, 4),
                 "per_class_accuracy": {k: round(v, 4) for k, v in per_class.items()},
                 "n_features": len(subset)}
 
