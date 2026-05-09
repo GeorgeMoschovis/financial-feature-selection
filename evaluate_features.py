@@ -82,8 +82,7 @@ class Evaluator:
         return oca
 
     def final_report(self, subset: frozenset) -> dict:
-        """Compute OCA, per-class accuracy, ACA, and RMSE for the final solution.
-        Called once at the end — not used inside the Tabu loop."""
+        # Compute OCA, per-class accuracy, ACA, and RMSE for the final solution
         mask = np.array([1 if i in subset else 0 for i in range(self.num_features)], dtype=np.int8)
         selected = np.where(mask == 1)[0]
 
